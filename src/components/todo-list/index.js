@@ -6,6 +6,7 @@ import removeItem from '../../store/actions/remove-item';
 import toggleItem from '../../store/actions/toggle-item';
 
 import TodoItems from '../todo-items';
+import FilterList from '../filter-list';
 
 export class TodoList extends React.Component {
   constructor ( props ) {
@@ -26,6 +27,7 @@ export class TodoList extends React.Component {
       onRemove = e => e,
       onToggle = e => e,
       todos = [],
+      visibilityFilter = 'SHOW_ALL'
     } = this.props;
 
     const {
@@ -50,12 +52,15 @@ export class TodoList extends React.Component {
           ?
           <TodoItems
             items={todos}
+            filter={visibilityFilter}
             onRemove={onRemove}
             onToggle={onToggle}
           />
           :
           <p>You have no todos.</p>
         }
+
+        <FilterList />
       </div>
     );
   }
@@ -77,8 +82,9 @@ export class TodoList extends React.Component {
   }
 }
 
-export const mapStateToProps = ({ todos }) => ({
+export const mapStateToProps = ({ todos, visibilityFilter }) => ({
   todos,
+  visibilityFilter,
 });
 
 export const mapDispatchToProps = dispatch => ({
