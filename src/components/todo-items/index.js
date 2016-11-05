@@ -4,11 +4,11 @@ import TodoItem from '../todo-item';
 
 export default ({
   items = [],
-  visibilityFilter = '',
+  filter = 'SHOW_ALL',
   onRemove = e => console.log( 'no onRemove method defined' ),
   onToggle = e => console.log( 'no onToggle method defined' ),
 }) => {
-  const setVisibleTodos = (todos, filter) => {
+  const getVisibleTodos = (todos, filter) => {
     switch ( filter ) {
       case 'SHOW_ALL':
         return todos;
@@ -16,12 +16,12 @@ export default ({
         return todos.filter( t => !t.completed );
       case 'SHOW_COMPLETED':
         return todos.filter( t => t.completed );
+      default:
+        return todos;
     }
   }
-  // FIXME this doesn't feel like the right place to filter items,
-  //       also, setVisibleTodos(items, visibilityFilter) returns undefined
-  //       so can't be mapped over
-  const nodes = items.map( ( todo, i ) => (
+
+  const nodes = getVisibleTodos(items, filter).map( ( todo, i ) => (
     <li key={i}>
       <TodoItem {...todo}
         remove={() => onRemove( todo )}
